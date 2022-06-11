@@ -30,7 +30,7 @@ exports.login = async (req, res) => {
     if (user) {
         const isMatched = await bcrypt.compare(req.body.password, user.password);
         if (isMatched) {
-            const token = await jwt.createToken({ id: user.id });
+            const token = await jwt.createToken({ _id: user._id });
             return res.json({
                 access_token: token,
                 token_type: 'Bearer',
@@ -42,7 +42,7 @@ exports.login = async (req, res) => {
 }
 
 exports.getUser = async (req, res) => {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user._id);
     return res.json(user);
 }
 
