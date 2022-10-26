@@ -5,6 +5,6 @@
 1. Copy `.env.example` to `.env`
 2. Update `CONNECTION_STRING`
 3. Update `JWT_SECRET` Key 
-4. Test API's in Postman
+4. `npm start`
 
 Note:- You can use any random string as `JWT_SECRET`
