@@ -9,7 +9,7 @@ exports.register = async (req, res) => {
         email: req.body.email
     })
     if(isExist) {
-        return res.status(400).json({ error: 'Email already exists.' });
+        return res.status(400).json({ message: 'Email already exists.' });
     }
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
@@ -23,22 +23,20 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     const user = await User.findOne({
-        where: {
-            email: req.body.email
-        }
+        email: req.body.email
     });
     if (user) {
         const isMatched = await bcrypt.compare(req.body.password, user.password);
         if (isMatched) {
             const token = await jwt.createToken({ _id: user._id });
-            return res.json({
+            return res.json({ 
                 access_token: token,
                 token_type: 'Bearer',
                 expires_in: jwtConfig.ttl
             });
         }
     }
-    return res.status(401).json({ error: 'Unauthorized' });
+    return res.status(400).json({ message: 'Invalid credentails.' });
 }
 
 exports.getUser = async (req, res) => {
