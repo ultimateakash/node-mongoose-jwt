@@ -1,11 +1,11 @@
-const User = require('../models/user.model');
-const cache = require('../utils/cache');
-const jwtConfig = require('../config/jwt');
-const jwt = require('../utils/jwt');
+const UserModal = require('../models/user.model');
+const jwtConfig = require('../config/jwt.config');
+const cache = require('../utils/cache.util');
+const jwt = require('../utils/jwt.util');
 const bcrypt = require('bcrypt');
 
 exports.register = async (req, res) => {
-    const isExist = await User.findOne({
+    const isExist = await UserModal.findOne({
         email: req.body.email
     })
     if(isExist) {
@@ -13,7 +13,7 @@ exports.register = async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-    const user = await User.create({
+    const user = await UserModal.create({
         name: req.body.name,
         email: req.body.email,
         password: hashedPassword
@@ -22,7 +22,7 @@ exports.register = async (req, res) => {
 }
 
 exports.login = async (req, res) => {
-    const user = await User.findOne({
+    const user = await UserModal.findOne({
         email: req.body.email
     });
     if (user) {
@@ -40,7 +40,7 @@ exports.login = async (req, res) => {
 }
 
 exports.getUser = async (req, res) => {
-    const user = await User.findById(req.user._id);
+    const user = await UserModal.findById(req.user._id);
     return res.json(user);
 }
 
